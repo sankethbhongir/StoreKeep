@@ -49,7 +49,7 @@ public class ProductContract {
 
         /** Phone Number of the Supplier
          *
-         * Type: BIGINT
+         * Type: Text
          */
         public static final String COLUMN_SUPPLIER_PHONE_NUMBER = "supplier_phone_number";
 
