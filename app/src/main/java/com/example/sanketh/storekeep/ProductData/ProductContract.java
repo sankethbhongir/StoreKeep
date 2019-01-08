@@ -27,31 +27,31 @@ public class ProductContract {
          *
          * Type: TEXT
          */
-        public static final String COLUMN_PRODUCT_NAME = "Product Name";
+        public static final String COLUMN_PRODUCT_NAME = "product_name";
 
         /** Price of the Product
          *
          * Type: INTEGER
          */
-        public static final String COLUMN_PRODUCT_PRICE = "Price";
+        public static final String COLUMN_PRODUCT_PRICE = "price";
 
         /** Quantity of the Product
          *
          * Type: INTEGER
          */
-        public static final String COLUMN_PRODUCT_QUANTITY = "Quantity";
+        public static final String COLUMN_PRODUCT_QUANTITY = "quantity";
 
         /** Name of the Supplier
          *
          * Type: TEXT
          */
-        public static final String COLUMN_SUPPLIER_NAME = "Supplier Name";
+        public static final String COLUMN_SUPPLIER_NAME = "supplier_name";
 
         /** Phone Number of the Supplier
          *
          * Type: BIGINT
          */
-        public static final String COLUMN_SUPPLIER_PHONE_NUMBER = "Supplier Phone Number";
+        public static final String COLUMN_SUPPLIER_PHONE_NUMBER = "supplier_phone_number";
 
 
     }
