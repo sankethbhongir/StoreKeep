@@ -9,4 +9,6 @@
     <string name="save">Save</string>
     <string name="delete">Delete</string>
     <string name="empty">Empty</string>
+    <string name="editor_insert_product_failed">error inserting product</string>
+    <string name="editor_insert_product_successful">Saved product</string>
 </resources>
