@@ -12,19 +12,19 @@ import com.example.sanketh.storekeep.ProductData.ProductContract.ProductEntry;
 import com.example.sanketh.storekeep.R;
 
 /**
- * {@link ProductCusorAdapter} is an adapter for a list or grid view
+ * {@link ProductCursorAdapter} is an adapter for a list or grid view
  * that uses a {@link Cursor} of pet data as its data source. This adapter knows
  * how to create list items for each row of pet data in the {@link Cursor}.
  */
-public class ProductCusorAdapter extends CursorAdapter {
+public class ProductCursorAdapter extends CursorAdapter {
 
     /**
-     * Constructs a new {@link ProductCusorAdapter}.
+     * Constructs a new {@link ProductCursorAdapter}.
      *
      * @param context The context
      * @param c       The cursor from which to get the data.
      */
-    public ProductCusorAdapter(Context context, Cursor c) {
+    public ProductCursorAdapter(Context context, Cursor c) {
         super(context, c, 0);
     }
 
