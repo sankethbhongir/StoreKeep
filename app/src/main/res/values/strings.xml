@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">StoreKeep</string>
+    <string name="look_at_logcat_for_results">logcat _results</string>
+    <string name="product_name">Product Name</string>
+    <string name="price">Price</string>
+    <string name="supplier_name">Supplier Name</string>
+    <string name="supplier_phone_number">Supplier Phone Number</string>
+    <string name="quantity">Quantity</string>
 </resources>
