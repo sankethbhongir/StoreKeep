@@ -28,6 +28,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".CatalogActivity" />
         </activity>
+
+        <provider
+            android:name=".ProductData.ProductProvider"
+            android:authorities="com.example.android.products"
+            android:exported="false" />
     </application>
 
 </manifest>
