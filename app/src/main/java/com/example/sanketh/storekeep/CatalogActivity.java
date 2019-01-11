@@ -1,6 +1,7 @@
 package com.example.sanketh.storekeep;
 
 import android.app.LoaderManager;
+import android.content.ContentUris;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -9,10 +10,12 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.sanketh.storekeep.ProductData.ProductContract.ProductEntry;
 import com.example.sanketh.storekeep.ProductData.ProductCursorAdapter;
+
 
 /**
  * Displays list of products that were entered and stored in the app.
@@ -40,14 +43,24 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         });
 
         // Find the ListView which will be populated with the product data
-        ListView petListView = findViewById(R.id.list);
+        ListView productListView = findViewById(R.id.list);
 
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
         View emptyView = findViewById(R.id.empty_view);
-        petListView.setEmptyView(emptyView);
+        productListView.setEmptyView(emptyView);
 
         mCursorAdapter = new ProductCursorAdapter(this, null);
-        petListView.setAdapter(mCursorAdapter);
+        productListView.setAdapter(mCursorAdapter);
+
+        // Passing the content uri of the current list item to editor activity
+        productListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                startActivity(new Intent(CatalogActivity.this, EditorActivity.class)
+                .setData(ContentUris.withAppendedId(ProductEntry.CONTENT_URI, id)));
+            }
+        });
+
 
         // Kick of the loader
         getLoaderManager().initLoader(PRODUCT_LOADER, null, this);
@@ -57,7 +70,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-        // Define projection that specifies the columns we acre about
+        // Define projection that specifies the columns we care about
         String [] project = {
                 ProductEntry._ID,
                 ProductEntry.COLUMN_PRODUCT_NAME,

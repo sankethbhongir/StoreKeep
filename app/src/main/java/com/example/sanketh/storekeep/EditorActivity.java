@@ -1,6 +1,10 @@
 package com.example.sanketh.storekeep;
 
+import android.app.LoaderManager;
 import android.content.ContentValues;
+import android.content.CursorLoader;
+import android.content.Loader;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -10,26 +14,42 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.sanketh.storekeep.ProductData.ProductContract;
 import com.example.sanketh.storekeep.ProductData.ProductContract.ProductEntry;
 
 /**
  * Allows user to create a new product or edit an existing one.
  */
-public class EditorActivity extends AppCompatActivity {
+public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    private static final String LOG_TAG = CatalogActivity.class.getSimpleName();
+
+    private static final int EXISTING_PRODUCT_LOADER = 0;
 
     private EditText mProductEditText, mPriceEditText, mQuantityEditText, mSupplierEditText, mPhoneEditText;
+
+    private Uri currentUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
 
+        // Depending upon the current uri, change the app bar to "add" or "edit"
+        currentUri = getIntent().getData();
+        if (currentUri == null)
+            setTitle("Add Product");
+        else
+            setTitle("Edit Product");
+
+
         mProductEditText = findViewById(R.id.edit_product_name_view);
         mPriceEditText = findViewById(R.id.edit_price_view);
         mQuantityEditText = findViewById(R.id.edit_quantity_view);
         mSupplierEditText = findViewById(R.id.edit_supplier_view);
         mPhoneEditText = findViewById(R.id.edit_phone_view);
+
+        // Kick of the Loader
+        getLoaderManager().initLoader(EXISTING_PRODUCT_LOADER, null, this);
     }
 
     @Override
@@ -52,7 +72,6 @@ public class EditorActivity extends AppCompatActivity {
         int productQuantity = Integer.parseInt(mQuantityEditText.getText().toString().trim());
         String supplierName = mSupplierEditText.getText().toString().trim();
         String supplierPhone = mPhoneEditText.getText().toString().trim();
-
 
 
         // Create a ContentValues object where column names are the keys,
@@ -106,5 +125,66 @@ public class EditorActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+
+
+    }
+
+    // Creating loader for single product uri
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        String[] projection = {
+                ProductEntry._ID,
+                ProductEntry.COLUMN_PRODUCT_NAME,
+                ProductEntry.COLUMN_PRODUCT_PRICE,
+                ProductEntry.COLUMN_PRODUCT_QUANTITY,
+                ProductEntry.COLUMN_SUPPLIER_NAME,
+                ProductEntry.COLUMN_SUPPLIER_PHONE_NUMBER
+        };
+
+        return new CursorLoader(this, currentUri, projection, null,
+                null, null);
+    }
+
+    // updating the edit text views on the screen through the cursor
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
+        if (cursor.moveToFirst()){
+            // Find the columns of product attributes that we're interested in
+            int productColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_NAME);
+            int priceColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_PRICE);
+            int quantityColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_QUANTITY);
+            int supplierColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_SUPPLIER_NAME);
+            int phoneColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_SUPPLIER_PHONE_NUMBER);
+
+            // Read the pet attributes from the Cursor for the current product
+            String productName = cursor.getString(productColumnIndex);
+            int productPrice = cursor.getInt(priceColumnIndex);
+            int productQuantity = cursor.getInt(quantityColumnIndex);
+            String supplierName = cursor.getString(supplierColumnIndex);
+            String supplierPhone = cursor.getString(phoneColumnIndex);
+
+            mProductEditText.setText(productName);
+            mPriceEditText.setText(productPrice);
+            mQuantityEditText.setText(productQuantity);
+            mSupplierEditText.setText(supplierName);
+            mPhoneEditText.setText(supplierPhone);
+
+
+
+        }
+    }
+
+    // Clearing out the views if the loader is invalidated
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+        mProductEditText.setText("");
+        mPriceEditText.setText("");
+        mQuantityEditText.setText("");
+        mSupplierEditText.setText("");
+        mPhoneEditText.setText("");
+
+
     }
 }
