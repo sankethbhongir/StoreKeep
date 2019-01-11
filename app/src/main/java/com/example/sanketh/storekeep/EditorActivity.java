@@ -38,9 +38,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         currentUri = getIntent().getData();
         if (currentUri == null)
             setTitle("Add Product");
-        else
+        else {
             setTitle("Edit Product");
+            // Kick of the Loader
+            getLoaderManager().initLoader(EXISTING_PRODUCT_LOADER, null, this);
 
+        }
 
         mProductEditText = findViewById(R.id.edit_product_name_view);
         mPriceEditText = findViewById(R.id.edit_price_view);
@@ -48,8 +51,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mSupplierEditText = findViewById(R.id.edit_supplier_view);
         mPhoneEditText = findViewById(R.id.edit_phone_view);
 
-        // Kick of the Loader
-        getLoaderManager().initLoader(EXISTING_PRODUCT_LOADER, null, this);
     }
 
     @Override
@@ -63,10 +64,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     /**
      * Get user input from editor and save new pet into database.
      */
+    private void saveProduct() {
 
-    private void insertPet() {
         // Read from input fields
-        // Use trim to eliminate leading or trailing white space
         String productName = mProductEditText.getText().toString().trim();
         int productPrice = Integer.parseInt(mPriceEditText.getText().toString().trim());
         int productQuantity = Integer.parseInt(mQuantityEditText.getText().toString().trim());
@@ -83,20 +83,39 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         values.put(ProductEntry.COLUMN_SUPPLIER_NAME, supplierName);
         values.put(ProductEntry.COLUMN_SUPPLIER_PHONE_NUMBER, supplierPhone);
 
-        // Insert a new pet into the provider, returning the content URI for the new pet.
-        Uri newUri = getContentResolver().insert(ProductEntry.CONTENT_URI, values);
+        if (currentUri == null) {
+            // Insert a new product into the provider, returning the content URI for the new pet.
+            Uri newUri = getContentResolver().insert(ProductEntry.CONTENT_URI, values);
+            // Show a toast message depending on whether or not the insertion was successful
+            if (newUri == null) {
+                // If the new content URI is null, then there was an error with insertion.
+                Toast.makeText(this, getString(R.string.editor_insert_product_failed),
 
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                // Otherwise, the insertion was successful and we can display a toast.
+                Toast.makeText(this, getString(R.string.editor_insert_product_successful),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+        else{
 
-        // Show a toast message depending on whether or not the insertion was successful
-        if (newUri == null) {
-            // If the new content URI is null, then there was an error with insertion.
-            Toast.makeText(this, getString(R.string.editor_insert_product_failed),
+            // Otherwise this is an EXISTING product, so update the pet with content URI: currentUri
+            // and pass in the new ContentValues. Pass in null for the selection and selection args
+            // because currentUri will already identify the correct row in the database that
+            // we want to modify.
+            int rowsAffected = getContentResolver().update(currentUri, values, null, null);
 
-                    Toast.LENGTH_SHORT).show();
-        } else {
-            // Otherwise, the insertion was successful and we can display a toast.
-            Toast.makeText(this, getString(R.string.editor_insert_product_successful),
-                    Toast.LENGTH_SHORT).show();
+            // Show a toast message depending on whether or not the update was successful.
+            if (rowsAffected == 0) {
+                // If no rows were affected, then there was an error with the update.
+                Toast.makeText(this, getString(R.string.editor_update_product_failed),
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                // Otherwise, the update was successful and we can display a toast.
+                Toast.makeText(this, getString(R.string.editor_update_product_successful),
+                        Toast.LENGTH_SHORT).show();
+            }
         }
 
 
@@ -109,7 +128,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             // Respond to a click on the "Save" menu option
             case R.id.action_save:
                 // Save product to database
-                insertPet();
+                saveProduct();
 
                 // Exit activity
                 finish();
@@ -148,6 +167,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     // updating the edit text views on the screen through the cursor
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
+        if (cursor == null || cursor.getCount() < 1) {
+            return;
+        }
 
         if (cursor.moveToFirst()){
             // Find the columns of product attributes that we're interested in
