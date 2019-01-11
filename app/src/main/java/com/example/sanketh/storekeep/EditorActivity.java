@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -28,6 +29,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private EditText mProductEditText, mPriceEditText, mQuantityEditText, mSupplierEditText, mPhoneEditText;
 
     private Uri currentUri;
+    private boolean shouldProceed = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,18 +70,70 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         // Read from input fields
         String productName = mProductEditText.getText().toString().trim();
-        int productPrice = Integer.parseInt(mPriceEditText.getText().toString().trim());
-        int productQuantity = Integer.parseInt(mQuantityEditText.getText().toString().trim());
+        String productPrice = mPriceEditText.getText().toString().trim();
+        String productQuantity = mQuantityEditText.getText().toString().trim();
         String supplierName = mSupplierEditText.getText().toString().trim();
         String supplierPhone = mPhoneEditText.getText().toString().trim();
 
+        //checking all if all the input fields are filled of not
+        if (currentUri == null || TextUtils.isEmpty(productName)
+                || TextUtils.isEmpty(productPrice)
+                || TextUtils.isEmpty(productQuantity)
+                || TextUtils.isEmpty(supplierName)
+                || TextUtils.isEmpty(supplierPhone)
+                || supplierPhone.length() != 10) {
+            if (TextUtils.isEmpty(productName)) {
+                Toast.makeText(this, R.string.product_name_toast, Toast.LENGTH_SHORT).show();
+                shouldProceed = false;
+                return;
+            } else {
+                shouldProceed = true;
+            }
+
+            if (TextUtils.isEmpty(String.valueOf(productPrice))) {
+                Toast.makeText(this, R.string.product_price_toast, Toast.LENGTH_SHORT).show();
+                shouldProceed = false;
+                return;
+            } else {
+                shouldProceed = true;
+            }
+
+            if (TextUtils.isEmpty(String.valueOf(productQuantity))) {
+                Toast.makeText(this, R.string.product_quantity_toast, Toast.LENGTH_SHORT).show();
+                shouldProceed = false;
+                return;
+            } else {
+                shouldProceed = true;
+            }
+
+
+            if (TextUtils.isEmpty(supplierName)) {
+                Toast.makeText(this, R.string.product_supplier_name_toast, Toast.LENGTH_SHORT).show();
+                shouldProceed = false;
+                return;
+            } else {
+                shouldProceed = true;
+            }
+
+            if (TextUtils.isEmpty(supplierPhone) || supplierPhone.length() != 10) {
+                if (supplierPhone.length() != 10) {
+                    Toast.makeText(this, R.string.product_supplier_phone_toast_2, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, R.string.product_supplier_phone_toast, Toast.LENGTH_SHORT).show();
+                }
+                shouldProceed = false;
+                return;
+            } else {
+                shouldProceed = true;
+            }
+        }
 
         // Create a ContentValues object where column names are the keys,
         // and Toto's pet attributes are the values.
         ContentValues values = new ContentValues();
         values.put(ProductEntry.COLUMN_PRODUCT_NAME, productName);
-        values.put(ProductEntry.COLUMN_PRODUCT_PRICE, productPrice);
-        values.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, productQuantity);
+        values.put(ProductEntry.COLUMN_PRODUCT_PRICE, Integer.parseInt(mPriceEditText.getText().toString().trim()));
+        values.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, Integer.parseInt(mQuantityEditText.getText().toString().trim()));
         values.put(ProductEntry.COLUMN_SUPPLIER_NAME, supplierName);
         values.put(ProductEntry.COLUMN_SUPPLIER_PHONE_NUMBER, supplierPhone);
 
@@ -129,7 +183,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             case R.id.action_save:
                 // Save product to database
                 saveProduct();
-
+                if(shouldProceed)
                 // Exit activity
                 finish();
                 return true;

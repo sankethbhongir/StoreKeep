@@ -13,4 +13,10 @@
     <string name="editor_insert_product_successful">Saved product</string>
     <string name="editor_update_product_failed">update failed</string>
     <string name="editor_update_product_successful">update successfull</string>
+    <string name="product_name_toast">Enter product name</string>
+    <string name="product_price_toast">Enter Product\'s Price</string>
+    <string name="product_quantity_toast">Enter Quantity of the Product</string>
+    <string name="product_supplier_name_toast">Enter Supplier Name</string>
+    <string name="product_supplier_phone_toast_2">Enter 10-digit phone number</string>
+    <string name="product_supplier_phone_toast">Enter phone number</string>
 </resources>
