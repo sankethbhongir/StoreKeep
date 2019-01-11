@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.example.sanketh.storekeep.ProductData.ProductContract.ProductEntry;
+import com.example.sanketh.storekeep.R;
 
 import java.util.Objects;
 
@@ -145,14 +146,14 @@ public class ProductProvider extends ContentProvider {
         if (values.containsKey(ProductEntry.COLUMN_PRODUCT_NAME)) {
             String productName = values.getAsString(ProductEntry.COLUMN_PRODUCT_NAME);
             if (productName == null || TextUtils.isEmpty(productName)) {
-                throw new IllegalArgumentException("Product requires a name");
+                throw new IllegalArgumentException(Objects.requireNonNull(getContext()).getString(R.string.sanity_check_product_name));
             }
         }
 
         if (values.containsKey(ProductEntry.COLUMN_PRODUCT_PRICE)) {
             Integer price = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_PRICE);
             if (price != null && price < 0 || TextUtils.isEmpty(String.valueOf(price))) {
-                throw new IllegalArgumentException("product requires valid price");
+                throw new IllegalArgumentException(Objects.requireNonNull(getContext()).getString(R.string.sanity_check_product_price));
             }
         }
 
@@ -160,24 +161,24 @@ public class ProductProvider extends ContentProvider {
         if (values.containsKey(ProductEntry.COLUMN_PRODUCT_QUANTITY)) {
             Integer quantity = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_QUANTITY);
             if (quantity != null && quantity < 0 || TextUtils.isEmpty(String.valueOf(quantity))) {
-                throw new IllegalArgumentException("Product requires valid quantity");
+                throw new IllegalArgumentException(Objects.requireNonNull(getContext()).getString(R.string.sanity_check_product_quantity));
             }
         }
 
         if (values.containsKey(ProductEntry.COLUMN_SUPPLIER_NAME)) {
             String supplier = values.getAsString(ProductEntry.COLUMN_SUPPLIER_NAME);
             if (supplier == null || TextUtils.isEmpty(supplier)) {
-                throw new IllegalArgumentException("Supplier requires name");
+                throw new IllegalArgumentException(Objects.requireNonNull(getContext()).getString(R.string.sanity_check_supplier_name));
             }
         }
 
         if (values.containsKey(ProductEntry.COLUMN_SUPPLIER_PHONE_NUMBER)) {
             String phone = values.getAsString(ProductEntry.COLUMN_SUPPLIER_PHONE_NUMBER);
             if (phone == null || TextUtils.isEmpty(phone)) {
-                throw new IllegalArgumentException("Supplier requires valid number");
+                throw new IllegalArgumentException(Objects.requireNonNull(getContext()).getString(R.string.sanity_check_supplier_number));
             }
             if (phone.length() != 10) {
-                throw new IllegalArgumentException("supplier requires 10 digit number");
+                throw new IllegalArgumentException(Objects.requireNonNull(getContext()).getString(R.string.sanity_check_supplier_ten_digit_number));
             }
         }
 
@@ -189,7 +190,7 @@ public class ProductProvider extends ContentProvider {
 
         // If the ID is -1, then the insertion failed. Log an error and return null.
         if (id == -1) {
-            Log.e(LOG_TAG, "Failed to insert row for " + uri);
+            Log.e(LOG_TAG, Objects.requireNonNull(getContext()).getString(R.string.failed_to_insert) + uri);
             return null;
         }
 
@@ -226,7 +227,7 @@ public class ProductProvider extends ContentProvider {
                 rowsDeleted = database.delete(ProductEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
-                throw new IllegalArgumentException("Deletion is not supported for " + uri);
+                throw new IllegalArgumentException(getContext().getString(R.string.deletion_not_supported) + uri);
         }
 
         // If 1 or more rows were deleted, then notify all listeners that the data at the
@@ -258,7 +259,7 @@ public class ProductProvider extends ContentProvider {
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 return updateProduct(uri, contentValues, selection, selectionArgs);
             default:
-                throw new IllegalArgumentException("Update is not supported for " + uri);
+                throw new IllegalArgumentException(Objects.requireNonNull(getContext()).getString(R.string.update_not_supported) + uri);
         }
 
     }
@@ -273,14 +274,14 @@ public class ProductProvider extends ContentProvider {
         if (values.containsKey(ProductEntry.COLUMN_PRODUCT_NAME)) {
             String productName = values.getAsString(ProductEntry.COLUMN_PRODUCT_NAME);
             if (productName == null || TextUtils.isEmpty(productName)) {
-                throw new IllegalArgumentException("Product requires a name");
+                throw new IllegalArgumentException(Objects.requireNonNull(getContext()).getString(R.string.sanity_check_product_name));
             }
         }
 
         if (values.containsKey(ProductEntry.COLUMN_PRODUCT_PRICE)) {
             Integer price = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_PRICE);
             if (price != null && price < 0 || TextUtils.isEmpty(String.valueOf(price))) {
-                throw new IllegalArgumentException("product requires valid price");
+                throw new IllegalArgumentException(Objects.requireNonNull(getContext()).getString(R.string.sanity_check_product_price));
             }
         }
 
@@ -288,24 +289,24 @@ public class ProductProvider extends ContentProvider {
         if (values.containsKey(ProductEntry.COLUMN_PRODUCT_QUANTITY)) {
             Integer quantity = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_QUANTITY);
             if (quantity != null && quantity < 0 || TextUtils.isEmpty(String.valueOf(quantity))) {
-                throw new IllegalArgumentException("Product requires valid quantity");
+                throw new IllegalArgumentException(Objects.requireNonNull(getContext()).getString(R.string.sanity_check_product_quantity));
             }
         }
 
         if (values.containsKey(ProductEntry.COLUMN_SUPPLIER_NAME)) {
             String supplier = values.getAsString(ProductEntry.COLUMN_SUPPLIER_NAME);
             if (supplier == null || TextUtils.isEmpty(supplier)) {
-                throw new IllegalArgumentException("Supplier requires name");
+                throw new IllegalArgumentException(Objects.requireNonNull(getContext()).getString(R.string.sanity_check_supplier_name));
             }
         }
 
         if (values.containsKey(ProductEntry.COLUMN_SUPPLIER_PHONE_NUMBER)) {
             String phone = values.getAsString(ProductEntry.COLUMN_SUPPLIER_PHONE_NUMBER);
             if (phone == null || TextUtils.isEmpty(phone)) {
-                throw new IllegalArgumentException("Supplier requires valid number");
+                throw new IllegalArgumentException(Objects.requireNonNull(getContext()).getString(R.string.supplier_phone_number));
             }
             if (phone.length() != 10) {
-                throw new IllegalArgumentException("supplier requires 10 digit number");
+                throw new IllegalArgumentException(Objects.requireNonNull(getContext()).getString(R.string.sanity_check_supplier_number));
             }
         }
 

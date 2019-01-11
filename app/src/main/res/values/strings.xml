@@ -19,4 +19,25 @@
     <string name="product_supplier_name_toast">Enter Supplier Name</string>
     <string name="product_supplier_phone_toast_2">Enter 10-digit phone number</string>
     <string name="product_supplier_phone_toast">Enter phone number</string>
+    <string name="add_product">Add Product</string>
+    <string name="edit_product">Edit Product</string>
+
+
+    !-- Dialog message when user is leaving editor but hasn't saved changes [CHAR LIMIT=NONE] -->
+    <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
+
+    <!-- Dialog button text for the option to discard a user's changes [CHAR LIMIT=20] -->
+    <string name="discard">Discard</string>
+
+    <!-- Dialog button text for the option to keep editing the current pet [CHAR LIMIT=20] -->
+    <string name="keep_editing">Keep Editing</string>
+    <string name="sanity_check_product_name">Product requires a name</string>
+    <string name="sanity_check_product_price">product requires valid price</string>
+    <string name="sanity_check_product_quantity">Product requires valid quantity</string>
+    <string name="sanity_check_supplier_name">Supplier requires name</string>
+    <string name="sanity_check_supplier_number">Supplier requires valid number</string>
+    <string name="sanity_check_supplier_ten_digit_number">supplier requires 10 digit number</string>
+    <string name="failed_to_insert">Failed to insert row for</string>
+    <string name="deletion_not_supported">Deletion is not supported for</string>
+    <string name="update_not_supported">Update is not supported for</string>
 </resources>
