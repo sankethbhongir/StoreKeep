@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -50,20 +51,23 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         productListView.setEmptyView(emptyView);
 
         mCursorAdapter = new ProductCursorAdapter(this, null);
+
         productListView.setAdapter(mCursorAdapter);
 
         // Passing the content uri of the current list item to editor activity
         productListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long id) {
+                Log.i(LOG_TAG, "click on item");
                 startActivity(new Intent(CatalogActivity.this, EditorActivity.class)
-                .setData(ContentUris.withAppendedId(ProductEntry.CONTENT_URI, id)));
+                        .setData(ContentUris.withAppendedId(ProductEntry.CONTENT_URI, id)));
             }
         });
 
 
         // Kick of the loader
         getLoaderManager().initLoader(PRODUCT_LOADER, null, this);
+
     }
 
 
@@ -71,7 +75,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
         // Define projection that specifies the columns we care about
-        String [] project = {
+        String[] project = {
                 ProductEntry._ID,
                 ProductEntry.COLUMN_PRODUCT_NAME,
                 ProductEntry.COLUMN_PRODUCT_PRICE,
@@ -90,7 +94,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        // update the {@link PetCursorAdapter} with the new cursor containing updated data
+        // update the {@link ProductCursorAdapter} with the new cursor containing updated data
         mCursorAdapter.swapCursor(cursor);
 
     }
