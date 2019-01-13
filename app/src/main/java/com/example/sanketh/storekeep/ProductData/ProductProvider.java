@@ -70,7 +70,7 @@ public class ProductProvider extends ContentProvider {
      * Perform the query for the given URI. Use the given projection, selection, selection arguments, and sort order.
      */
     @Override
-    public Cursor query(@NonNull Uri uri, @NonNull String[] projection,@NonNull String selection,@NonNull String[] selectionArgs,@NonNull String sortOrder) {
+    public Cursor query(@NonNull Uri uri, @NonNull String[] projection, @NonNull String selection, @NonNull String[] selectionArgs, @NonNull String sortOrder) {
 
         // Get readable database
         SQLiteDatabase database = mDbHelper.getReadableDatabase();
@@ -195,7 +195,7 @@ public class ProductProvider extends ContentProvider {
         }
 
         if (getContext() != null) {
-            // Notify all listeners that the data has changed for the pet content URI
+            // Notify all listeners that the data has changed for the product content URI
             getContext().getContentResolver().notifyChange(uri, null);
         }
 
@@ -265,7 +265,7 @@ public class ProductProvider extends ContentProvider {
     }
 
     /**
-     * Update products in the database with the given content values. Apply the changes to the rows
+     * Update products in the database with the given product content values. Apply the changes to the rows
      * specified in the selection and selection arguments (which could be 0 or 1 or more products).
      * Return the number of rows that were successfully updated.
      */
