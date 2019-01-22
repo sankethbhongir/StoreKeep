@@ -113,6 +113,7 @@
                 style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:singleLine="true"
                 android:hint="@string/supplier_phone_number" />
         </android.support.design.widget.TextInputLayout>
 
