@@ -116,10 +116,12 @@ public class ProductCursorAdapter extends CursorAdapter {
         });
 
 
+        String price = context.getString(R.string.dollar) + String.valueOf(productPrice);
+        String qty = context.getString(R.string.qty) + String.valueOf(productQuantity);
         // Update the TextViews with the attributes for the current product
         productTextView.setText(productName);
-        priceTextView.setText(String.valueOf(productPrice));
-        quantityTextView.setText(String.valueOf(productQuantity));
+        priceTextView.setText(price);
+        quantityTextView.setText(qty);
         supplierTextView.setText(supplierName);
 
     }

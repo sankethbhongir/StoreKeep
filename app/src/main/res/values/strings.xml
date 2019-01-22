@@ -40,8 +40,8 @@
     <string name="deletion_not_supported">Deletion is not supported for</string>
     <string name="update_not_supported">Update is not supported for</string>
     <string name="order">Order</string>
-    <string name="qty">Qty</string>
-    <string name="dollar">$</string>
+    <string name="qty">Qty- </string>
+    <string name="dollar">$ </string>
 
 
     <string name="editor_delete_product_successful">Product deleted</string>
